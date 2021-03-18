@@ -1,4 +1,7 @@
 # Timeloop
+**This modified version is modified to take timeout as a decorator arg plus arguments passed to the jobs.**
+modifications by tekn0ir
+
 Timeloop is a service that can be used to run periodic tasks after a certain interval.
 
 Each job runs on a separate thread and when the service is shut down, it waits till all tasks currently being executed are completed.
@@ -19,18 +22,30 @@ from datetime import timedelta
 
 tl = Timeloop()
 
-@tl.job(interval=timedelta(seconds=2))
+@tl.job(interval=timedelta(seconds=2), timeout=timedelta(milliseconds=500))
 def sample_job_every_2s():
     print "2s job current time : {}".format(time.ctime())
+sample_job_every_2s()
 
-@tl.job(interval=timedelta(seconds=5))
+@tl.job(interval=timedelta(seconds=5), timeout=timedelta(milliseconds=500))
 def sample_job_every_5s():
     print "5s job current time : {}".format(time.ctime())
+sample_job_every_5s()
 
-
-@tl.job(interval=timedelta(seconds=10))
+@tl.job(interval=timedelta(seconds=10), timeout=timedelta(milliseconds=500))
 def sample_job_every_10s():
     print "10s job current time : {}".format(time.ctime())
+sample_job_every_10s()
+```
+
+## Writing jobs with arguments
+```python
+@tl.job(interval=timedelta(seconds=5), timeout=timedelta(milliseconds=500))
+def sample_job(idx):
+    print "Task id: {} | time: {}".format(idx, time.ctime())
+# example: queue jobs with different ids
+for id in range(1, 3):
+	sample_job(id)
 ```
 
 ## Start time loop in separate thread

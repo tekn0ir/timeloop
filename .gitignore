@@ -3,3 +3,4 @@ dist/*
 timeloop.egg-info/*
 *.pyc
 *.mypy*
+venv
