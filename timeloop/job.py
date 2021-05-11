@@ -24,7 +24,7 @@ class Job(Thread):
         self.logger.info("Job initialized {}".format(self.execute))
 
     def out(self):
-        self.logger.info("Timeout in job {}".format(self.execute))
+        self.logger.warning("Timeout in job {}".format(self.execute))
         self.join(0)  # Silently kill the
 
     def stop(self):
@@ -32,13 +32,17 @@ class Job(Thread):
         self.join()
 
     def run(self):
-        next_period = 0
-        next_time = time()
-
-        while not self.stopped.wait(next_period):
-            t = Timer(self.timeout.total_seconds(), self.out)
-            t.start()
+        while not self.stopped.wait(self.interval.total_seconds()):
             self.execute(*self.args, **self.kwargs)
-            t.cancel()
-            next_time += self.interval.total_seconds()
-            next_period = next_time - time()
+
+    # def run(self):
+    #     next_period = 0
+    #     next_time = time()
+    #
+    #     while not self.stopped.wait(next_period):
+    #         t = Timer(self.timeout.total_seconds(), self.out)
+    #         t.start()
+    #         self.execute(*self.args, **self.kwargs)
+    #         t.cancel()
+    #         next_time += self.interval.total_seconds()
+    #         next_period = next_time - time()

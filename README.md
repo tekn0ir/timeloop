@@ -1,7 +1,22 @@
-# Timeloop
+# Timeloop - with timeout
 **This modified version is modified to take timeout as a decorator arg plus arguments passed to the jobs.**
 modifications by tekn0ir
 
+## Release of new version
+Create tarball
+```shell
+python setup.py sdist
+```
+
+Create a release on github: https://github.com/tekn0ir/timeloop/releases
+Upload the new version of the tarball to the release
+
+## Install version
+```shell
+python -m pip install https://github.com/tekn0ir/timeloop/releases/download/v1.0.2/timeloop-1.0.2.tar.gz --upgrade
+```
+ 
+# Timeloop
 Timeloop is a service that can be used to run periodic tasks after a certain interval.
 
 Each job runs on a separate thread and when the service is shut down, it waits till all tasks currently being executed are completed.
